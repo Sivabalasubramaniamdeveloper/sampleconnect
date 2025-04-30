@@ -20,6 +20,10 @@ class TextConstants {
   static const String acceptTerms = 'accept_terms';
   static const String loading = 'Loading...';
   static const String hello = 'Hello';
+  static const String morning_text = "Good Morning";
+  static const String afternoon_text = "Good Afternoon";
+  static const String evening_text = "Good Evening";
+  static const String chat = "Chat";
   static const String takePhoto = 'Take a photo';
   static const String chooseGallery = "Choose from gallery";
   static const String selectImage = "Select Image";

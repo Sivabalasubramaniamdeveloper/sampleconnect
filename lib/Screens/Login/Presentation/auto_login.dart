@@ -29,23 +29,21 @@ class _AutoLoginState extends State<AutoLogin> {
     final SharedPreferences localDb = await SharedPreferences.getInstance();
     final username = localDb.getString("username");
     final uuid = localDb.getString("uuid");
+    if (username != null && uuid != null) {
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        '/chatList',
+            (route) => false,
+      );
+      showSuccessToast(
+          "${capitalizeFirstLetter(username)} is Successfully Login");
+    } else {
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        '/gmailAuth',
+            (route) => false,
+      );
+    }
 
-    Future.delayed(Duration.zero, () {
-      if (username != null && uuid != null) {
-        Navigator.pushNamedAndRemoveUntil(
-          context,
-          '/chatList',
-          (route) => false,
-        );
-        showSuccessToast(
-            "${capitalizeFirstLetter(username)} is Successfully Login");
-      } else {
-        Navigator.pushNamedAndRemoveUntil(
-          context,
-          '/gmailAuth',
-          (route) => false,
-        );
-      }
-    });
   }
 }

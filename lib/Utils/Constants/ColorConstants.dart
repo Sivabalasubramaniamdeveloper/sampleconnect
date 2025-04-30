@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 
 class KConstantColors {
   static const Color bgColor = Color(0xFF00A550);
-  static const Color secondaryColor = Color(0xFF1DB954);
+  static const Color secondaryColor = Color(0xFF5A42F0);
   static const Color balanceColor = Color(0xFFFF914D);
-  static const Color primaryColor = Color(0xFF33006F);
+  // static const Color primaryColor = Color(0xFF33006F);
+  static const Color primaryColor = Color(0xFF2B2BF5);
   // static const Color primaryColor = Color(0xFF1DB954);
   static const Color error = Color(0xFFFF5963);
   static const Color secondaryBackground = Color(0xfff5f5f5);
@@ -28,8 +29,8 @@ class KConstantColors {
     colors: [KConstantColors.secondaryColor, KConstantColors.primaryColor],
   );
   static const Color goldcolor = Color(0xFFffd700);
-  static  Color greyColor = Colors.grey.shade200;
-  static  Color greyColorShade800 = Colors.grey.shade800;
+  static Color greyColor = Colors.grey.shade200;
+  static Color greyColorShade800 = Colors.grey.shade800;
   static const Color labelColor = Colors.black45;
   static const Color black54 = Colors.black54;
   static const Color hinttextColor = Color(0xff677681);

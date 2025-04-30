@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -63,14 +62,16 @@ class _GmailAuthPageState extends State<GmailAuthPage> {
     });
     UserCredential? user = await FirebaseAuthentication().signInWithGoogle();
 
-    await FirebaseFireStore().insertUser(UserModel(
-        name: user!.user!.displayName!,
-        email: user.user!.email!,
-        imageUrl: user.user!.photoURL!,
-        createdAt: DateTime.now(),
-        role: "user",
-        firebaseUid: user.user!.uid!,
-        lastSignInTime: DateTime.now()),user.user!.uid);
+    await FirebaseFireStore().insertUser(
+        UserModel(
+            name: user!.user!.displayName!,
+            email: user.user!.email!,
+            imageUrl: user.user!.photoURL!,
+            createdAt: DateTime.now(),
+            role: "user",
+            firebaseUid: user.user!.uid!,
+            lastSignInTime: DateTime.now()),
+        user.user!.uid);
     showSuccessToast(
         "${capitalizeFirstLetter(user!.user!.displayName!)} is Successfully Login");
     setState(() {
@@ -84,10 +85,10 @@ class _GmailAuthPageState extends State<GmailAuthPage> {
       "uuid",
       user.user!.uid,
     );
-    await Navigator.pushAndRemoveUntil(
+    await Navigator.pushNamedAndRemoveUntil(
       context,
-      MaterialPageRoute(builder: (context) => ChatList()),
-      (Route<dynamic> route) => false,
+      '/homeScreen',
+      (route) => false,
     );
   }
 }

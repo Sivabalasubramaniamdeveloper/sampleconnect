@@ -1,27 +1,25 @@
 import 'dart:convert';
-
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'LocalNotification.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   if (message.notification != null) {
     String payloadData = jsonEncode(message.data);
     LocalNotification.simpleNotification(
-      titile:message.notification!.title! ,
+      titile: message.notification!.title!,
       body: message.notification!.body!,
       payload: payloadData,
     );
   }
-
 }
 
 class PushNotificationService {
   final FirebaseMessaging messaging = FirebaseMessaging.instance;
-  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
 
   Future<void> init() async {
     final SharedPreferences localDb = await SharedPreferences.getInstance();
@@ -45,7 +43,6 @@ class PushNotificationService {
     String? apnsToken = await FirebaseMessaging.instance.getAPNSToken();
     print('APNs Token: $apnsToken');
 
-
     // Setup background message handler
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
@@ -67,7 +64,7 @@ class PushNotificationService {
     if (message.notification != null) {
       String payloadData = jsonEncode(message.data);
       LocalNotification.simpleNotification(
-        titile:message.notification!.title! ,
+        titile: message.notification!.title!,
         body: message.notification!.body!,
         payload: payloadData,
       );
@@ -84,16 +81,20 @@ class PushNotificationService {
 
     // Create the Android notification channel
     await flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(channel);
 
     // Initialize the plugin for displaying notifications on the device
-    const initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
-    const initializationSettings = InitializationSettings(android: initializationSettingsAndroid);
+    const initializationSettingsAndroid =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
+    const initializationSettings =
+        InitializationSettings(android: initializationSettingsAndroid);
     await flutterLocalNotificationsPlugin.initialize(initializationSettings);
 
     // Set foreground notification presentation options for iOS
-    await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+    await FirebaseMessaging.instance
+        .setForegroundNotificationPresentationOptions(
       alert: true,
       badge: true,
       sound: true,
@@ -112,7 +113,8 @@ class PushNotificationService {
           android: AndroidNotificationDetails(
             'high_importance_channel', // Make sure this matches your channel ID
             'High Importance Notifications',
-            channelDescription: 'This channel is used for important notifications.',
+            channelDescription:
+                'This channel is used for important notifications.',
             importance: Importance.high,
             icon: 'launch_background', // Change this to your app's icon
           ),

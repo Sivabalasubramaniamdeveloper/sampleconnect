@@ -1,13 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'package:sampleconnect/Utils/Constants/ColorConstants.dart';
+import 'package:sampleconnect/Utils/Constants/TextConstants.dart';
 import '../../../Components/CommonFunctions.dart';
-import '../../../Firebase/controllers/firebase_auth.dart';
+import '../../../Firebase/controllers/firebase_firestore.dart';
 import '../../../Models/UserModel.dart';
+import '../../../Utils/Constants/CustomWidgets.dart';
+import '../../Personalchat/Presentation/personal_chat.dart';
 
 class ChatList extends StatefulWidget {
   const ChatList({super.key});
@@ -18,10 +20,11 @@ class ChatList extends StatefulWidget {
 
 class _ChatListState extends State<ChatList> {
   final FirebaseAuth auth = FirebaseAuth.instance;
+  List<UserModel>? users = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue.shade700,
+      backgroundColor: KConstantColors.primaryColor,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -51,13 +54,7 @@ class _ChatListState extends State<ChatList> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          "Good Morning,",
-                          style: TextStyle(
-                              color: Colors.white70,
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w400),
-                        ),
+                        CustomWidgets().getGreetingWidget(context),
                         Text(
                           "${capitalizeFirstLetter(auth.currentUser!.displayName!)} 👋",
                           style: TextStyle(
@@ -71,7 +68,7 @@ class _ChatListState extends State<ChatList> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    FirebaseAuthentication().signOut(context);
+                    CustomWidgets().showLogoutDialog(context);
                   },
                   child: Icon(Icons.logout, color: Colors.white, size: 28.sp),
                 ),
@@ -92,12 +89,11 @@ class _ChatListState extends State<ChatList> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Chat title with count
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Chat",
+                        TextConstants.chat,
                         style: TextStyle(
                             fontSize: 24.sp, fontWeight: FontWeight.bold),
                       ),
@@ -109,45 +105,15 @@ class _ChatListState extends State<ChatList> {
                           borderRadius: BorderRadius.circular(20.r),
                         ),
                         child: Text(
-                          "24",
+                          "${users!.length}",
                           style: TextStyle(color: Colors.blue),
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(height: 10.h),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      _buildTabButton("Personal", isSelected: true),
-                      _buildTabButton("Group"),
-                      _buildTabButton("Community"),
-                    ],
+                  SizedBox(
+                    height: 10.h,
                   ),
-                  SizedBox(height: 10.h),
-                  // Pinned chats
-                  Text(
-                    "PINNED",
-                    style: TextStyle(
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey),
-                  ),
-                  SizedBox(height: 10.h),
-                  _buildChatTile(
-                    name: "Charlie Rosser",
-                    message: "Can I have both?",
-                    time: "11:52 PM",
-                    imageUrl: "https://i.pravatar.cc/150?img=10",
-                  ),
-                  _buildChatTile(
-                    name: "Jakob Schleifer",
-                    message: "Danielle is Typing...",
-                    time: "11:52 PM",
-                    imageUrl: "https://i.pravatar.cc/150?img=20",
-                    isTyping: true,
-                  ),
-                  SizedBox(height: 20.h),
                   // All Chats
                   Text(
                     "ALL CHAT",
@@ -159,28 +125,51 @@ class _ChatListState extends State<ChatList> {
                   // SizedBox(height: 10.h),
                   Expanded(
                     child: StreamBuilder<QuerySnapshot>(
-                      stream: FirebaseFirestore.instance
-                          .collection('users')
-                          .snapshots(),
+                      stream: FirebaseFireStore().getUsers(),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          final List<UserModel> users =
-                              snapshot.data!.docs.map((doc) {
-                            final data = doc.data() as Map<String, dynamic>;
-                            return UserModel.fromMap(data);
-                          }).toList();
-                    
+                          final currentUserId =
+                              FirebaseAuth.instance.currentUser?.uid;
+                          users = snapshot.data!.docs
+                              .map((doc) {
+                                final data = doc.data() as Map<String, dynamic>;
+                                return UserModel.fromMap(data);
+                              })
+                              .where(
+                                  (user) => user.firebaseUid != currentUserId)
+                              .toList();
                           return ListView.builder(
-                            itemCount: users.length,
+                            itemCount: users!.length,
                             padding: const EdgeInsets.all(0).r,
                             itemBuilder: (context, index) {
-                              final user = users[index];
-                              return _buildChatTile(
-                                name: user.name,
-                                message: "${user.name} is Typing...",
-                                time: "${user.createdAt}",
-                                imageUrl: user.imageUrl,
-                                isTyping: true,
+                              final user = users![index];
+
+                              FirebaseFireStore().lastMessage(
+                                  currentUserId!, user.firebaseUid);
+                              return GestureDetector(
+                                onTap: () async {
+                                  final chatExists = await FirebaseFireStore()
+                                      .checkChatExist(
+                                          currentUserId!, user.firebaseUid);
+                                  if (!chatExists) {
+                                    await FirebaseFireStore().createChat(
+                                        currentUserId, user.firebaseUid);
+                                  }
+                                  // lastmessage= await FirebaseFireStore().lastMessage;
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => PersonalChat(
+                                                chatPerson: user,
+                                              )));
+                                },
+                                child: _buildChatTile(
+                                  name: user.name,
+                                  message:'',
+                                  time: "${user.createdAt}",
+                                  imageUrl: user.imageUrl,
+                                  isTyping: true,
+                                ),
                               );
                             },
                           );
@@ -206,22 +195,6 @@ class _ChatListState extends State<ChatList> {
     );
   }
 
-  Widget _buildTabButton(String title, {bool isSelected = false}) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
-      decoration: BoxDecoration(
-        color: isSelected ? Colors.blue : Colors.grey.shade200,
-        borderRadius: BorderRadius.circular(20.r),
-      ),
-      child: Text(
-        title,
-        style: TextStyle(
-            color: isSelected ? Colors.white : Colors.black87,
-            fontWeight: FontWeight.w600),
-      ),
-    );
-  }
-
   Widget _buildChatTile({
     required String name,
     required String message,
@@ -231,9 +204,19 @@ class _ChatListState extends State<ChatList> {
   }) {
     return ListTile(
       contentPadding: EdgeInsets.symmetric(vertical: 5.h),
-      leading: CircleAvatar(
-        backgroundImage: NetworkImage(imageUrl),
-        radius: 24.r,
+      leading: Badge(
+        backgroundColor: Colors.green,
+        smallSize: 1,
+        offset: Offset(3, 0),
+        isLabelVisible: true,
+        label: Text(
+          "",
+          style: TextStyle(fontSize: 8.sp),
+        ),
+        child: CircleAvatar(
+          backgroundImage: NetworkImage(imageUrl),
+          radius: 24.r,
+        ),
       ),
       title: Text(capitalizeFirstLetter(name),
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.sp)),

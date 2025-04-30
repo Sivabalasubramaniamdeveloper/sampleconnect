@@ -1,5 +1,10 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import '../Utils/Constants/ColorConstants.dart';
 import '../Utils/Constants/ImageConstants.dart';
+import '../Utils/Constants/TextConstants.dart';
 
 String formatDateTime(String timestamp) {
   final dateTime =
@@ -25,18 +30,16 @@ DateTime convertToDateTime(String dateTimeString) {
     DateTime dateTime = inputFormat.parse(dateTimeString);
     return dateTime;
   } catch (e) {
-    print("Error parsing date-time string: $e");
     return DateTime.now();
   }
 }
+
 String convertToDateTimeString(String dateTimeString) {
-  print(dateTimeString);
   try {
-    DateFormat inputFormat = DateFormat("dd/MM/yyyy");
-    DateTime dateTime = inputFormat.parse(dateTimeString);
-    return dateTime.toString();
+    DateTime dateTime = DateTime.parse(dateTimeString);
+    String formattedDate = DateFormat('dd-MM HH:mm a').format(dateTime);
+    return formattedDate;
   } catch (e) {
-    print("Error parsing date-time string: $e");
     return DateTime.now().toString();
   }
 }
@@ -61,14 +64,14 @@ String convertEpochToReadableFormattedDate(int epochTime) {
   return DateFormat("MMM d yyyy h:mm a").format(dateTime);
 }
 
-
-
-// Future<bool> checkNotificationPermission() async {
-//   final settings = await FirebaseMessaging.instance.getNotificationSettings();
-//   return settings.authorizationStatus == AuthorizationStatus.authorized;
-// }
-
 String capitalizeFirstLetter(String input) {
-  if (input.isEmpty) return input; // Handle empty strings
+  if (input.isEmpty) return input;
   return input[0].toUpperCase() + input.substring(1);
+}
+
+String generateChatID(String uuid1,String uuid2){
+  List uuids=[uuid1,uuid2];
+  uuids.sort();
+  String chatID=uuids.fold('', (id,uuid)=>"$id$uuid");
+  return chatID.trim();
 }

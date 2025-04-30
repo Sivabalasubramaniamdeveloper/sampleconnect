@@ -4,11 +4,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sqflite/sqflite.dart';
-
 import 'Firebase/LocalNotification.dart';
 import 'Firebase/PushNotification.dart';
-import 'Screens/Login/Presentation/login_screen.dart';
+import 'Firebase/db/db.dart';
 import 'Utils/Constants/AppRoutes.dart';
+import 'Utils/Theme/ThemeCubit/ThemeCubit.dart';
+
 late final Database localDB;
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,7 +43,7 @@ Future main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
-  // localDB = await DBHelper().database;
+  localDB = await DBHelper().database;
   await Firebase.initializeApp();
   await PushNotificationService().init();
   await LocalNotification.localInit();
@@ -62,22 +63,29 @@ class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(
-        minTextAdapt: true,
-        splitScreenMode: true,
-        designSize: const Size(412, 846),
-        builder: (context, child) {
-          return MaterialApp(
-            title: 'Flutter Demo',
-            debugShowCheckedModeBanner: false,
-            routes: appRoutes,
-            initialRoute: '/',
-            navigatorKey: navigatorsKey,
-            theme: ThemeData(
-              colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-              useMaterial3: true,
-            ),
-          );
-        });
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<ThemeCubit>(
+          create: (context) => ThemeCubit(),
+        ),
+      ],
+      child: ScreenUtilInit(
+          minTextAdapt: true,
+          splitScreenMode: true,
+          designSize: const Size(412, 846),
+          builder: (context, child) {
+            return BlocBuilder<ThemeCubit, ThemeData>(
+                builder: (context, theme) {
+              return MaterialApp(
+                title: 'Flutter Demo',
+                debugShowCheckedModeBanner: false,
+                routes: appRoutes,
+                initialRoute: '/',
+                navigatorKey: navigatorsKey,
+                theme: theme,
+              );
+            });
+          }),
+    );
   }
 }

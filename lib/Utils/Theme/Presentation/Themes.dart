@@ -11,7 +11,7 @@ class AppThemes {
       primaryColor: Color(0xFFEFF2FF),
       cardColor:Colors.white,
       // secondaryHeaderColor: Colors.black87,
-      hintColor: KConstantColors.primaryColor,
+      hintColor: KConstantColors.blackColor,
       scaffoldBackgroundColor:Color(0xfff5f5f5),
       appBarTheme: AppBarTheme(
         color: Colors.blue,
@@ -24,7 +24,7 @@ class AppThemes {
       ),
       textTheme: TextTheme(
         bodyMedium: TextStyleClass.textSize14(
-          color: KConstantColors.primaryColor,
+          color: KConstantColors.blackColor,
         ),
       )
       // colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.green)

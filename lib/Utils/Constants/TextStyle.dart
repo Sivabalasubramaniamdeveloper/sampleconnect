@@ -106,6 +106,9 @@ class TextStyleClass {
   static TextStyle textSize20({Color? color, FontWeight? fontWeight}) {
     return textStyle(size: 20.sp, color: color, fontWeight: fontWeight);
   }
+  static TextStyle textSize20Bold({Color? color, FontWeight? fontWeight}) {
+    return textStyle(size: 20.sp, color: color, fontWeight: FontWeight.bold);
+  }
 
   static TextStyle textSize21({Color? color, FontWeight? fontWeight}) {
     return textStyle(size: 21.sp, color: color, fontWeight: fontWeight);

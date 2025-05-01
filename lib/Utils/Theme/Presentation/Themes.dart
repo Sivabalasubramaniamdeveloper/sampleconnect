@@ -32,10 +32,10 @@ class AppThemes {
       );
   static final ThemeData darkTheme = ThemeData(
     brightness: Brightness.dark,
-    primaryColor: const Color(0xFF1E1E1E),
+    primaryColor:   Color(0xFF1B1424),
     cardColor: Colors.black,
     // secondaryHeaderColor: Colors.white,
-    hintColor: KConstantColors.primaryColor,
+    hintColor: KConstantColors.white,
     disabledColor: Colors.black38,
     scaffoldBackgroundColor: const Color(0xFF121212),
     appBarTheme: const AppBarTheme(
@@ -49,10 +49,8 @@ class AppThemes {
       ),
     ),
     textTheme: TextTheme(
-      bodyMedium: TextStyle(
-        color: Color(0xFFFFFFFF),
-        fontSize: 16.sp,
-        fontFamily: "OpenSans",
+      bodyMedium: TextStyleClass.textSize14(
+        color: KConstantColors.white,
       ),
     ),
     // colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue)

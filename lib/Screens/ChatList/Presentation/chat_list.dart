@@ -24,63 +24,14 @@ class _ChatListState extends State<ChatList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: KConstantColors.primaryColor,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Top greeting
-          Padding(
-            padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 50.h),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    CircleAvatar(
-                      radius: 24.r,
-                      child: Container(
-                        decoration: BoxDecoration(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(30.r))),
-                        child: ClipOval(
-                          child: CachedNetworkImage(
-                              errorWidget: (context, url, error) =>
-                                  Icon(Icons.error),
-                              imageUrl: auth.currentUser!.photoURL!),
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: 12.w),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CustomWidgets().getGreetingWidget(context),
-                        Text(
-                          "${capitalizeFirstLetter(auth.currentUser!.displayName!)} 👋",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18.sp,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                GestureDetector(
-                  onTap: () {
-                    CustomWidgets().showLogoutDialog(context);
-                  },
-                  child: Icon(Icons.logout, color: Colors.white, size: 28.sp),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(height: 30.h),
           Expanded(
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Theme.of(context).primaryColor,
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(30.r),
                   topRight: Radius.circular(30.r),

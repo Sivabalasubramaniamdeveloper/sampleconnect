@@ -32,7 +32,7 @@ class _AutoLoginState extends State<AutoLogin> {
     if (username != null && uuid != null) {
       Navigator.pushNamedAndRemoveUntil(
         context,
-        '/chatList',
+        '/homeScreen',
             (route) => false,
       );
       showSuccessToast(

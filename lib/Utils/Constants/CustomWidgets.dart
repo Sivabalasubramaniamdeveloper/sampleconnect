@@ -67,7 +67,7 @@ class CustomWidgets {
         Text(
           greetingText,
           style: TextStyle(
-              color: Colors.white, fontSize: 14.sp, fontWeight: FontWeight.bold),
+              color: Theme.of(context).hintColor, fontSize: 14.sp, fontWeight: FontWeight.bold),
         ),
         SizedBox(width: 5.w), // Add spacing between text and icon
         Icon(

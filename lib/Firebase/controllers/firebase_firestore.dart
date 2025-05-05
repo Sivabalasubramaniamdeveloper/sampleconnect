@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sampleconnect/Components/CommonFunctions.dart';
-import 'package:sampleconnect/Screens/ChatList/Presentation/chat_list.dart';
-
 import '../../Components/CustomToast/CustomToast.dart';
 import '../../Models/ChatModel.dart';
 import '../../Models/MessageModel.dart';
@@ -11,7 +9,7 @@ import '../../Models/UserModel.dart';
 class FirebaseFireStore {
   final FirebaseFirestore db = FirebaseFirestore.instance;
 
-  Future<void> insertUser(UserModel user, String firebaseUid) async {
+  Future<void> insertUser(UserListModel user, String firebaseUid) async {
     try {
       DocumentSnapshot document =
           await db.collection('users').doc(firebaseUid).get();
@@ -91,7 +89,6 @@ class FirebaseFireStore {
             print('Last message content: ${lastMessage.content}');
             print('Sent by: ${lastMessage.senderID}');
             print('At: ${lastMessage.sentAt}');
-
           } else {
             print('No messages yet.');
           }
@@ -108,6 +105,20 @@ class FirebaseFireStore {
     }
   }
 
+  Stream<DocumentSnapshot<Map<String, dynamic>>> getChats(
+      String uuid1, String uuid2) {
+    String chatId = generateChatID(uuid1, uuid2);
+    try {
+      final document = db.collection('messages').doc(chatId);
+      return document.snapshots();
+    } catch (err) {
+      showErrorToast("Failed to load  message");
+      throw FirebaseAuthException(
+        code: 'failed-to-load-message',
+        message: 'Failed to load message: $err',
+      );
+    }
+  }
 
   Future<bool> checkChatExist(String uuid1, String uuid2) async {
     String chatId = generateChatID(uuid1, uuid2);

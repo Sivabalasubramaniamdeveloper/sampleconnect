@@ -75,3 +75,12 @@ String generateChatID(String uuid1,String uuid2){
   String chatID=uuids.fold('', (id,uuid)=>"$id$uuid");
   return chatID.trim();
 }
+
+String limitMessage(String message, {int limit = 10}) {
+  if (message.length <= limit) {
+    return message;
+  } else {
+    return "${message.substring(0, limit)}...";
+  }
+}
+

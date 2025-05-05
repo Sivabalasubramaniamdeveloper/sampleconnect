@@ -7,6 +7,8 @@ import 'package:sqflite/sqflite.dart';
 import 'Firebase/LocalNotification.dart';
 import 'Firebase/PushNotification.dart';
 import 'Firebase/db/db.dart';
+import 'Screens/Personalchat/cubit/chat_message_cubit.dart';
+import 'Screens/UserList/cubit/user_list_cubit.dart';
 import 'Utils/Constants/AppRoutes.dart';
 import 'Utils/Theme/ThemeCubit/ThemeCubit.dart';
 
@@ -47,7 +49,6 @@ Future main() async {
   await Firebase.initializeApp();
   await PushNotificationService().init();
   await LocalNotification.localInit();
-
   runApp(const MyApp());
 }
 
@@ -67,6 +68,12 @@ class _MyAppState extends State<MyApp> {
       providers: [
         BlocProvider<ThemeCubit>(
           create: (context) => ThemeCubit(),
+        ),
+        BlocProvider<UserListCubit>(
+          create: (context) => UserListCubit(),
+        ),
+        BlocProvider<ChatMessageCubit>(
+          create: (context) => ChatMessageCubit(),
         ),
       ],
       child: ScreenUtilInit(

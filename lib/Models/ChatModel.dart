@@ -2,10 +2,10 @@ import 'MessageModel.dart';
 
 class ChatModel {
   final String id;
-  final List<String> participants;
+  final List<dynamic> participants;
   final List<MessageModel> messages;
 
-  ChatModel( {
+  ChatModel({
     required this.id,
     required this.participants,
     required this.messages,
@@ -14,7 +14,7 @@ class ChatModel {
   factory ChatModel.fromMap(Map<String, dynamic> map) {
     return ChatModel(
       id: map['id'] as String,
-      participants: map['participants'] as List<String>,
+      participants: map['participants'] as List<dynamic>,
       messages: map['messages'] as List<MessageModel>,
     );
   }

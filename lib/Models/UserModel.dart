@@ -1,4 +1,4 @@
-class UserModel {
+class UserListModel {
   final String name;
   final String email;
   final DateTime createdAt;
@@ -7,7 +7,7 @@ class UserModel {
   final String imageUrl;
   final DateTime lastSignInTime;
 
-  UserModel( {
+  UserListModel( {
     required this.name,
     required this.email,
     required this.createdAt,
@@ -17,9 +17,9 @@ class UserModel {
     required this.lastSignInTime,
   });
 
-  // Factory method to create a UserModel from JSON
-  factory UserModel.fromMap(Map<String, dynamic> map) {
-    return UserModel(
+  // Factory method to create a UserListModel from JSON
+  factory UserListModel.fromMap(Map<String, dynamic> map) {
+    return UserListModel(
       name: map['name'] as String,
       imageUrl: map['imageUrl']??'',
       email: map['email'] as String,
@@ -30,7 +30,7 @@ class UserModel {
     );
   }
 
-  // Method to convert UserModel to JSON
+  // Method to convert UserListModel to JSON
   Map<String, dynamic> toMap() {
     return {
       'name': name,

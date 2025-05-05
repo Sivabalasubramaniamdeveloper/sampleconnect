@@ -9,7 +9,7 @@ import '../../../Firebase/controllers/firebase_firestore.dart';
 import '../../../Models/UserModel.dart';
 import '../../../Utils/Constants/ImageConstants.dart';
 import '../../../Utils/Constants/TextConstants.dart';
-import '../../ChatList/Presentation/chat_list.dart';
+import '../../UserList/Presentation/user_list.dart';
 
 class GmailAuthPage extends StatefulWidget {
   @override
@@ -63,7 +63,7 @@ class _GmailAuthPageState extends State<GmailAuthPage> {
     UserCredential? user = await FirebaseAuthentication().signInWithGoogle();
 
     await FirebaseFireStore().insertUser(
-        UserModel(
+        UserListModel(
             name: user!.user!.displayName!,
             email: user.user!.email!,
             imageUrl: user.user!.photoURL!,

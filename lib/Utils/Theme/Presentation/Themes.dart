@@ -8,7 +8,7 @@ class AppThemes {
   static final ThemeData lightTheme = ThemeData(
       brightness: Brightness.light,
       disabledColor: Colors.black38,
-      primaryColor: Color(0xFFEFF2FF),
+      primaryColor:KConstantColors.white,
       cardColor:Colors.white,
       // secondaryHeaderColor: Colors.black87,
       hintColor: KConstantColors.blackColor,

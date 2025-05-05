@@ -27,7 +27,7 @@ class _PersonalChatState extends State<PersonalChat> {
     return Scaffold(
       // backgroundColor: Color(0xFF1B1424), // Dark background
       appBar: AppBar(
-        backgroundColor: Color(0xFF1B1424),
+        backgroundColor: Theme.of(context).primaryColor,
         elevation: 3,
         title: Row(
           children: [
@@ -44,7 +44,7 @@ class _PersonalChatState extends State<PersonalChat> {
                 Text(
                   widget.chatPerson.name,
                   style: TextStyleClass.textSize18Bold(
-                      color: KConstantColors.white),
+                      color:Theme.of(context).hintColor),
                 ),
                 Text(
                   "Online",
@@ -61,15 +61,16 @@ class _PersonalChatState extends State<PersonalChat> {
           child: Icon(
             Icons.arrow_back_ios_new_outlined,
             size: 24.sp,
+            color: Theme.of(context).hintColor,
           ),
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.settings),
+            icon: Icon(Icons.settings,color: Theme.of(context).hintColor,),
             onPressed: () {},
           ),
           IconButton(
-            icon: Icon(Icons.more_vert),
+            icon: Icon(Icons.more_vert,color: Theme.of(context).hintColor,),
             onPressed: () {},
           ),
         ],

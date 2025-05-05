@@ -58,7 +58,7 @@ class CustomWidgets {
     } else {
       greetingText = TextConstants.evening_text;
       iconData = Icons.nights_stay;
-      iconColor = KConstantColors.greyColor;
+      iconColor = KConstantColors.blackColor;
     }
 
     return Row(

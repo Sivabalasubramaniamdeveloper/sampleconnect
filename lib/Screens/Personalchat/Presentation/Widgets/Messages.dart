@@ -73,9 +73,10 @@ class _ChatScreenState extends State<ChatScreen> {
                       isSender: message.senderID == auth.currentUser!.uid,
                       color: Theme.of(context).cardColor,
                       constraints: BoxConstraints(maxWidth: 200.0),
-                      delivered: message.senderID == auth.currentUser!.uid
-                          ? true
-                          : false,
+                      // seen: message.senderID == auth.currentUser!.uid
+                      //     ?  widget.chatPerson.status == "online"
+                      //     : false,
+                      // sent: widget.chatPerson.status != "online",
                       textStyle: TextStyle(
                         fontSize: 16.sp,
                         color: Theme.of(context).hintColor,

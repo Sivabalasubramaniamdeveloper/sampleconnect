@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -82,5 +83,11 @@ String limitMessage(String message, {int limit = 10}) {
   } else {
     return "${message.substring(0, limit)}...";
   }
+}
+
+String formatTimestampToTime(Timestamp timestamp) {
+  final DateTime dateTime = timestamp.toDate();
+  final String formattedTime = DateFormat('dd/MM hh:mm a').format(dateTime);
+  return formattedTime;
 }
 

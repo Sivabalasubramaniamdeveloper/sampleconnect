@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -67,10 +68,12 @@ class _GmailAuthPageState extends State<GmailAuthPage> {
             name: user!.user!.displayName!,
             email: user.user!.email!,
             imageUrl: user.user!.photoURL!,
-            createdAt: DateTime.now(),
+            createdAt: Timestamp.now(),
             role: "user",
             firebaseUid: user.user!.uid!,
-            lastSignInTime: DateTime.now()),
+            status: "online",
+            lastSeen: Timestamp.now(),
+        ),
         user.user!.uid);
     showSuccessToast(
         "${capitalizeFirstLetter(user!.user!.displayName!)} is Successfully Login");

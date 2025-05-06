@@ -5,15 +5,15 @@ import '../Presentation/Themes.dart';
 
 class ThemeCubit extends Cubit<ThemeData> {
   ThemeCubit() : super(AppThemes.lightTheme) {
-    _loadTheme();
+    loadTheme();
   }
 
   bool isDarkTheme = false;
 
-  Future<void> _loadTheme() async {
+  Future<void> loadTheme() async {
     final prefs = await SharedPreferences.getInstance();
-    isDarkTheme = prefs.getBool('isDarkTheme') ?? true;
-    if (!isDarkTheme) {
+    isDarkTheme = prefs.getBool('isDarkTheme') ?? false;
+    if (isDarkTheme) {
       emit(AppThemes.darkTheme);
     } else {
       emit(AppThemes.lightTheme);

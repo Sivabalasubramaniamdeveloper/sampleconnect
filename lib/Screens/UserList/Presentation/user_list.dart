@@ -97,7 +97,7 @@ class _ChatListState extends State<ChatList> {
                               child: Text("Something went wrong"));
                         } else {
                           return const Center(
-                              child: CircularProgressIndicator());
+                              child: SizedBox());
                         }
                       }),
                     ],
@@ -163,6 +163,7 @@ class _ChatListState extends State<ChatList> {
                                     },
                                     child: _buildChatTile(
                                       name: user.name,
+                                      online: user.status == "online",
                                       message: lastMessage.isNotEmpty
                                           ? lastMessage
                                           : "No messages yet",
@@ -202,6 +203,7 @@ class _ChatListState extends State<ChatList> {
   Widget _buildChatTile({
     required String name,
     required String message,
+    required bool online,
     required String time,
     required String imageUrl,
     bool isTyping = false,
@@ -209,7 +211,7 @@ class _ChatListState extends State<ChatList> {
     return ListTile(
       contentPadding: EdgeInsets.symmetric(vertical: 5.h),
       leading: Badge(
-        backgroundColor: Colors.green,
+        backgroundColor: online ? Colors.green : Colors.red,
         smallSize: 1,
         offset: Offset(3, 0),
         isLabelVisible: true,

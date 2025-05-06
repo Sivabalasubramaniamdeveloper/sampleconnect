@@ -1,15 +1,11 @@
 import 'package:chat_bubbles/message_bars/message_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sampleconnect/Utils/Constants/TextStyle.dart';
-
-import '../../../../Firebase/controllers/firebase_firestore.dart';
-import '../../../../Models/MessageModel.dart';
+import '../../../../Components/CommonFunctions.dart';
 import '../../../../Models/UserModel.dart';
-import '../../../../Utils/Constants/ColorConstants.dart';
 import '../Widgets/Messages.dart';
 
 class PersonalChat extends StatefulWidget {
@@ -42,13 +38,18 @@ class _PersonalChatState extends State<PersonalChat> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  widget.chatPerson.name,
+                  capitalizeFirstLetter(widget.chatPerson.name),
                   style: TextStyleClass.textSize18Bold(
-                      color:Theme.of(context).hintColor),
+                      color: Theme.of(context).hintColor),
                 ),
                 Text(
-                  "Online",
-                  style: TextStyleClass.textSize12Bold(color: Colors.green),
+                  widget.chatPerson.status == "online"
+                      ? widget.chatPerson.status
+                      : formatTimestampToTime(widget.chatPerson.lastSeen),
+                  style: TextStyleClass.textSize12Bold(
+                      color: widget.chatPerson.status == "online"
+                          ? Colors.green
+                          : Colors.red),
                 ),
               ],
             ),
@@ -66,16 +67,24 @@ class _PersonalChatState extends State<PersonalChat> {
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.settings,color: Theme.of(context).hintColor,),
+            icon: Icon(
+              Icons.settings,
+              color: Theme.of(context).hintColor,
+            ),
             onPressed: () {},
           ),
           IconButton(
-            icon: Icon(Icons.more_vert,color: Theme.of(context).hintColor,),
+            icon: Icon(
+              Icons.more_vert,
+              color: Theme.of(context).hintColor,
+            ),
             onPressed: () {},
           ),
         ],
       ),
-      body: ChatScreen(chatPerson: widget.chatPerson,),
+      body: ChatScreen(
+        chatPerson: widget.chatPerson,
+      ),
     );
   }
 }

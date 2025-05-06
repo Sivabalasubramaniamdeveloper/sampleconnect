@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:sampleconnect/Screens/UserList/Presentation/user_list.dart';
 import '../../Components/CommonFunctions.dart';
+import '../../Firebase/controllers/UserPresenceService.dart';
 import '../../Utils/Constants/ColorConstants.dart';
 import '../../Utils/Constants/CustomWidgets.dart';
 import '../../Utils/Constants/TextStyle.dart';
@@ -20,11 +21,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final presence = UserPresenceService();
+
   final FirebaseAuth auth = FirebaseAuth.instance;
   int _selectedIndex = 0;
-  static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
-  static FirebaseAnalyticsObserver observer =
-  FirebaseAnalyticsObserver(analytics: analytics);
 
   static final List<Widget> _widgetOptions = <Widget>[
     Text(
@@ -41,18 +41,19 @@ class _HomeScreenState extends State<HomeScreen> {
       style: TextStyleClass.textSize18Bold(),
     ),
   ];
-@override
+  @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    analytics.setAnalyticsCollectionEnabled(true);
-     analytics.logEvent(
-      name: 'screen_view',
-      parameters: {
-        'screen_name': 'HomePage',
-      },
-    );
+    presence.initialize();
   }
+
+  @override
+  void dispose() {
+    super.dispose();
+    presence.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

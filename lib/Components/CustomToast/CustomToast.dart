@@ -33,7 +33,7 @@ showSuccessToast(String message, {Toast toastLength = Toast.LENGTH_LONG}) {
     fontSize: 13.sp,
     gravity: ToastGravity.BOTTOM,
     toastLength: toastLength,
-    textColor: KConstantColors.primaryColor,
+    textColor: KConstantColors.blackColor,
   );
 }
 

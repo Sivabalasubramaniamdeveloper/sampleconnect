@@ -14,6 +14,8 @@ class UserListCubit extends Cubit<UserListState> {
       (snapshot) {
         final docs = snapshot.docs;
         if (docs.isNotEmpty) {
+          print("docs.length");
+          print(docs.first.data());
           final usersList =
               docs.map((doc) => UserListModel.fromMap(doc.data())).toList();
 

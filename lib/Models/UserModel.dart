@@ -1,45 +1,52 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class UserListModel {
   final String name;
   final String email;
-  final DateTime createdAt;
+  final Timestamp createdAt;
   final String role;
   final String firebaseUid;
   final String imageUrl;
-  final DateTime lastSignInTime;
+  final Timestamp lastSeen;
+  final String status;
 
-  UserListModel( {
+
+  UserListModel({
     required this.name,
     required this.email,
     required this.createdAt,
     required this.imageUrl,
     required this.role,
     required this.firebaseUid,
-    required this.lastSignInTime,
+    required this.lastSeen,
+    required this.status,
   });
 
-  // Factory method to create a UserListModel from JSON
+  // ✅ Correct factory using Firestore Timestamp
   factory UserListModel.fromMap(Map<String, dynamic> map) {
     return UserListModel(
-      name: map['name'] as String,
-      imageUrl: map['imageUrl']??'',
-      email: map['email'] as String,
-      createdAt: DateTime.parse(map['createdAt']),
-      role: map['role'] as String,
-      firebaseUid: map['firebaseUid'] as String,
-      lastSignInTime: DateTime.parse(map['lastSignInTime']),
+      name: map['name'] ?? '',
+      email: map['email'] ?? '',
+      imageUrl: map['imageUrl'] ?? '',
+      createdAt: map['createdAt'] as Timestamp,
+      role: map['role'] ?? '',
+      firebaseUid: map['firebaseUid'] ?? '',
+      status: map['status'] ?? '',
+      lastSeen: map['lastSeen'] as Timestamp,
     );
   }
 
-  // Method to convert UserListModel to JSON
+  // ✅ Correct toMap using Timestamp directly
   Map<String, dynamic> toMap() {
     return {
       'name': name,
       'email': email,
       'imageUrl': imageUrl,
-      'createdAt': createdAt.toIso8601String(),
+      'createdAt': createdAt,
       'role': role,
       'firebaseUid': firebaseUid,
-      'lastSignInTime': lastSignInTime.toIso8601String(),
+      'status': status,
+      'lastSeen': lastSeen,
     };
   }
 }

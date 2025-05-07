@@ -63,6 +63,7 @@ dependencies:
   google_nav_bar: ^5.0.7
   chat_bubbles: ^1.6.0
   firebase_analytics: ^11.4.5
+  flutter_launcher_icons: ^0.14.3
 
 dev_dependencies:
   flutter_test:

@@ -11,24 +11,17 @@ class FirebaseAuthentication {
   //Sign in with Google
   Future<UserCredential?> signInWithGoogle() async {
     try {
-      var connectivityResult = await Connectivity().checkConnectivity();
-      if (connectivityResult.first == ConnectivityResult.none) {
-        Fluttertoast.showToast(msg: "No internet connection");
-        throw FirebaseAuthException(
-          code: 'no-internet',
-          message: 'No internet connection. Please check your network.',
-        );
-      }
-      final GoogleSignIn googleSignIn = GoogleSignIn();
-      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+      final googleUser = await GoogleSignIn().signIn();
+      if (googleUser == null) return null;
 
-      final GoogleSignInAuthentication? googleAuth =
-          await googleUser?.authentication;
-      final AuthCredential credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth?.accessToken,
-        idToken: googleAuth?.idToken,
+      final googleAuth = await googleUser.authentication;
+      print(googleAuth.idToken);
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
       );
-
+      print("Google signin sucessssssssssssssssssssssssssssssssssssss");
       final UserCredential userCredential =
           await FirebaseAuth.instance.signInWithCredential(credential);
       return userCredential;

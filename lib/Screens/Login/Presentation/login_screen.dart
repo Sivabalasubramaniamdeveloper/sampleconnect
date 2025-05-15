@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../Components/CommonFunctions.dart';
 import '../../../Components/CustomToast/CustomToast.dart';
@@ -58,25 +61,32 @@ class _GmailAuthPageState extends State<GmailAuthPage> {
 
   Future<void> loginFunction() async {
     final SharedPreferences localDb = await SharedPreferences.getInstance();
+    var connectivityResult = await Connectivity().checkConnectivity();
+    if (connectivityResult.first == ConnectivityResult.none) {
+      Fluttertoast.showToast(msg: "No internet connection");
+      return;
+    }
     setState(() {
       _isSigningIn = true;
     });
-    UserCredential? user = await FirebaseAuthentication().signInWithGoogle();
 
+    UserCredential? user = await FirebaseAuthentication().signInWithGoogle();
+    final token = await FirebaseMessaging.instance.getToken();
     await FirebaseFireStore().insertUser(
         UserListModel(
-            name: user!.user!.displayName!,
-            email: user.user!.email!,
-            imageUrl: user.user!.photoURL!,
-            createdAt: Timestamp.now(),
-            role: "user",
-            firebaseUid: user.user!.uid!,
-            status: "online",
-            lastSeen: Timestamp.now(),
+          name: user!.user!.displayName!,
+          email: user.user!.email!,
+          imageUrl: user.user!.photoURL!,
+          createdAt: Timestamp.now(),
+          role: "user",
+          firebaseUid: user.user!.uid!,
+          status: "online",
+          lastSeen: Timestamp.now(),
+          firebaseToken: token.toString(),
         ),
         user.user!.uid);
     showSuccessToast(
-        "${capitalizeFirstLetter(user!.user!.displayName!)} is Successfully Login");
+        "${capitalizeFirstLetter(user.user!.displayName!)} is Successfully Login");
     setState(() {
       _isSigningIn = false;
     });

@@ -91,3 +91,8 @@ String formatTimestampToTime(Timestamp timestamp) {
   return formattedTime;
 }
 
+String formatDateTimeString(String dateTimeString) {
+  DateTime dateTime = DateTime.parse(dateTimeString);
+  String formatted = '${dateTime.day.toString().padLeft(2, '0')}/${dateTime.month.toString().padLeft(2, '0')} ${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}';
+  return formatted;
+}

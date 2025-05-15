@@ -1,13 +1,18 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:sampleconnect/Screens/Personalchat/Presentation/Widgets/Messages.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'LocalNotification.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   if (message.notification != null) {
     String payloadData = jsonEncode(message.data);
+    print("ssssssssssssssssssss");
     LocalNotification.simpleNotification(
       titile: message.notification!.title!,
       body: message.notification!.body!,
@@ -20,55 +25,76 @@ class PushNotificationService {
   final FirebaseMessaging messaging = FirebaseMessaging.instance;
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
-
-  Future<void> init() async {
-    final SharedPreferences localDb = await SharedPreferences.getInstance();
-
-    // Request permission for iOS devices
-
-    await FirebaseMessaging.instance.requestPermission(
+  void requestNotificationPermission() async {
+    NotificationSettings settings = await messaging.requestPermission(
       alert: true,
       announcement: true,
       badge: true,
-      carPlay: false,
-      criticalAlert: false,
-      provisional: false,
+      carPlay: true,
+      criticalAlert: true,
+      provisional: true,
       sound: true,
     );
 
-    // Generate the token and save it locally
-    final token = await FirebaseMessaging.instance.getToken();
-    print("Firebase Token: $token");
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      print('Permission_Granted');
+    } else if (settings.authorizationStatus ==
+        AuthorizationStatus.provisional) {
+      print('Provisional_Permission_Granted');
+    } else {
+      print('Permission_Denied');
+    }
+  }
+
+  Future<String> getDeviceToken() async {
+    final SharedPreferences localDb = await SharedPreferences.getInstance();
+    String? token = await messaging.getToken();
     await localDb.setString("firebaseToken", token!);
+    return token;
+  }
+
+  Future<void> init() async {
+    // Request permission for iOS devices
+    requestNotificationPermission();
+    getDeviceToken();
+    // Generate the token and save it locally
+
     String? apnsToken = await FirebaseMessaging.instance.getAPNSToken();
     print('APNs Token: $apnsToken');
 
     // Setup background message handler
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
-    // Handle the initial message when the app is opened
-    messaging.getInitialMessage().then(handleMessage);
-    FirebaseMessaging.onMessageOpenedApp.listen(handleMessage);
-
     // Setup the notification channel for Android
     await setupFlutterNotifications();
 
-    // Handle foreground notifications
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      showFlutterNotification(message);
+    FirebaseMessaging.onMessage.listen((message) {
+      if (Platform.isAndroid) {
+        initLocalNotifications(message);
+        showFlutterNotification(message);
+      } else {
+        showFlutterNotification(message);
+      }
     });
+    FirebaseMessaging.onMessageOpenedApp.listen((event) {
+      handleMessage(event);
+    });
+
+    // when app is terminated
+    RemoteMessage? initialMessage =
+        await FirebaseMessaging.instance.getInitialMessage();
+    if (initialMessage != null) {
+      handleMessage(initialMessage);
+    }
   }
 
-  void handleMessage(RemoteMessage? message) {
-    if (message == null) return;
-    if (message.notification != null) {
-      String payloadData = jsonEncode(message.data);
-      LocalNotification.simpleNotification(
-        titile: message.notification!.title!,
-        body: message.notification!.body!,
-        payload: payloadData,
-      );
-    }
+
+
+  handleMessage(RemoteMessage message) {
+    print("messagesssssssss");
+    print(message);
+    print(message);
+    print(message);
   }
 
   Future<void> setupFlutterNotifications() async {
@@ -101,9 +127,24 @@ class PushNotificationService {
     );
   }
 
+  void initLocalNotifications(RemoteMessage message) async {
+    var androidInitializationSettings =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
+    var iOSInitializationSettings = DarwinInitializationSettings();
+
+    var initializeSettings = InitializationSettings(
+        android: androidInitializationSettings, iOS: iOSInitializationSettings);
+
+    await flutterLocalNotificationsPlugin.initialize(initializeSettings,
+        onDidReceiveNotificationResponse: (payload) {
+      handleMessage(message);
+    });
+  }
+
   void showFlutterNotification(RemoteMessage message) {
     RemoteNotification? notification = message.notification;
     AndroidNotification? android = message.notification?.android;
+
     if (notification != null && android != null && !kIsWeb) {
       flutterLocalNotificationsPlugin.show(
         notification.hashCode,

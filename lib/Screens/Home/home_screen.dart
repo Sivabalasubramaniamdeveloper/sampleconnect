@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,10 +8,10 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:sampleconnect/Screens/UserList/Presentation/user_list.dart';
 import '../../Components/CommonFunctions.dart';
 import '../../Firebase/controllers/UserPresenceService.dart';
-import '../../Utils/Constants/ColorConstants.dart';
 import '../../Utils/Constants/CustomWidgets.dart';
 import '../../Utils/Constants/TextStyle.dart';
 import '../../Utils/Theme/ThemeCubit/ThemeCubit.dart';
+import '../Expense/Presentation/ExpenseScreen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -32,10 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
       style: TextStyleClass.textSize18Bold(),
     ),
     ChatList(),
-    Text(
-      'Search',
-      style: TextStyleClass.textSize18Bold(),
-    ),
+    ExpenseScreen(),
     Text(
       'Profile',
       style: TextStyleClass.textSize18Bold(),
@@ -86,10 +83,20 @@ class _HomeScreenState extends State<HomeScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         CustomWidgets().getGreetingWidget(context),
-                        Text(
-                          "${capitalizeFirstLetter(auth.currentUser!.displayName!)} 👋",
-                          style: TextStyleClass.textSize18Bold(
-                              color: Theme.of(context).hintColor),
+                        GestureDetector(
+                          onTap: () async {
+                            final token =
+                            await FirebaseMessaging.instance.getToken();
+                            print("object");
+                            // sendPushNotification(
+                            //   token.toString(),
+                            // );
+                          },
+                          child: Text(
+                            "${capitalizeFirstLetter(auth.currentUser!.displayName!)} 👋",
+                            style: TextStyleClass.textSize18Bold(
+                                color: Theme.of(context).hintColor),
+                          ),
                         ),
                       ],
                     ),

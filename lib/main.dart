@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,6 +14,8 @@ import 'Utils/Constants/AppRoutes.dart';
 import 'Utils/Theme/ThemeCubit/ThemeCubit.dart';
 
 late final Database localDB;
+late final FirebaseAuth auth;
+late final FirebaseApp app;
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   ErrorWidget.builder = (FlutterErrorDetails details) {
@@ -46,7 +49,8 @@ Future main() async {
     DeviceOrientation.portraitDown,
   ]);
   localDB = await DBHelper().database;
-  await Firebase.initializeApp();
+  app = await Firebase.initializeApp();
+  auth = FirebaseAuth.instanceFor(app: app);
   await PushNotificationService().init();
   await LocalNotification.localInit();
   runApp(const MyApp());
@@ -62,6 +66,12 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   final GlobalKey<NavigatorState> navigatorsKey = GlobalKey<NavigatorState>();
   // This widget is the root of your application.
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(

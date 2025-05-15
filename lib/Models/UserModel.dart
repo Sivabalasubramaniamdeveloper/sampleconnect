@@ -7,6 +7,7 @@ class UserListModel {
   final String role;
   final String firebaseUid;
   final String imageUrl;
+  final String firebaseToken;
   final Timestamp lastSeen;
   final String status;
 
@@ -20,9 +21,10 @@ class UserListModel {
     required this.firebaseUid,
     required this.lastSeen,
     required this.status,
+    required this.firebaseToken,
   });
 
-  // ✅ Correct factory using Firestore Timestamp
+
   factory UserListModel.fromMap(Map<String, dynamic> map) {
     return UserListModel(
       name: map['name'] ?? '',
@@ -32,6 +34,7 @@ class UserListModel {
       role: map['role'] ?? '',
       firebaseUid: map['firebaseUid'] ?? '',
       status: map['status'] ?? '',
+      firebaseToken: map['firebaseToken'] ?? '',
       lastSeen: map['lastSeen'] as Timestamp,
     );
   }
@@ -46,6 +49,7 @@ class UserListModel {
       'role': role,
       'firebaseUid': firebaseUid,
       'status': status,
+      'firebaseToken': firebaseToken,
       'lastSeen': lastSeen,
     };
   }

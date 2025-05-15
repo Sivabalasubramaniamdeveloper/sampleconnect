@@ -33,11 +33,10 @@ class ChatMessageCubit extends Cubit<ChatMessageState> {
     );
   }
 
-  Future<MessageModel?> loadMessagesLastMessage(String uuid1, String uuid2) async {
+  Stream<MessageModel?> loadMessagesLastMessage(String uuid1, String uuid2) {
     String chatId = generateChatID(uuid1, uuid2);
 
-    try {
-      final snapshot = await _db.collection('messages').doc(chatId).get();
+    return _db.collection('messages').doc(chatId).snapshots().map((snapshot) {
       final docs = snapshot.data();
 
       if (docs == null || (docs['messages'] as List).isEmpty) {
@@ -45,10 +44,8 @@ class ChatMessageCubit extends Cubit<ChatMessageState> {
       } else {
         return MessageModel.fromMap((docs['messages'] as List).last);
       }
-    } catch (error) {
-      print('Error fetching last message: $error');
-      return null;
-    }
+    });
   }
+
 
 }

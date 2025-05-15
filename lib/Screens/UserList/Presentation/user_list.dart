@@ -131,8 +131,8 @@ class _ChatListState extends State<ChatList> {
                             itemBuilder: (context, index) {
                               final user = users[index];
 
-                              return FutureBuilder<MessageModel?>(
-                                future: context
+                              return StreamBuilder<MessageModel?>(
+                                stream: context
                                     .read<ChatMessageCubit>()
                                     .loadMessagesLastMessage(
                                       currentUserId!,
@@ -157,7 +157,7 @@ class _ChatListState extends State<ChatList> {
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                              PersonalChat(chatPerson: user),
+                                              PersonalChat(chatPerson: user.firebaseUid),
                                         ),
                                       );
                                     },

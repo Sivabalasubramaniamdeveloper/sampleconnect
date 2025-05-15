@@ -1,13 +1,19 @@
+import 'dart:convert';
+
 import 'package:chat_bubbles/bubbles/bubble_special_one.dart';
 import 'package:chat_bubbles/message_bars/message_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:googleapis_auth/auth.dart';
+import 'package:googleapis_auth/auth_io.dart';
 import 'package:sampleconnect/Screens/Personalchat/cubit/chat_message_state.dart';
 
+import '../../../../Components/CommonFunctions.dart';
 import '../../../../Firebase/controllers/firebase_firestore.dart';
 import '../../../../Models/MessageModel.dart';
 import '../../../../Models/UserModel.dart';
@@ -31,7 +37,6 @@ class _ChatScreenState extends State<ChatScreen> {
     _controller.dispose();
     super.dispose();
   }
-
 
   @override
   void initState() {
@@ -73,10 +78,6 @@ class _ChatScreenState extends State<ChatScreen> {
                       isSender: message.senderID == auth.currentUser!.uid,
                       color: Theme.of(context).cardColor,
                       constraints: BoxConstraints(maxWidth: 200.0),
-                      // seen: message.senderID == auth.currentUser!.uid
-                      //     ?  widget.chatPerson.status == "online"
-                      //     : false,
-                      // sent: widget.chatPerson.status != "online",
                       textStyle: TextStyle(
                         fontSize: 16.sp,
                         color: Theme.of(context).hintColor,
@@ -94,8 +95,8 @@ class _ChatScreenState extends State<ChatScreen> {
             }),
           ),
           MessageBar(
-            onSend: (message) {
-              FirebaseFireStore().sendMessage(
+            onSend: (message) async {
+              await FirebaseFireStore().sendMessage(
                   auth.currentUser!.uid,
                   widget.chatPerson.firebaseUid,
                   MessageModel(
@@ -103,6 +104,10 @@ class _ChatScreenState extends State<ChatScreen> {
                     content: message,
                     sentAt: DateTime.now(),
                   ));
+              if (widget.chatPerson.status != 'online') {
+                sendPushNotification(widget.chatPerson.firebaseToken,
+                    widget.chatPerson, message);
+              }
             },
             actions: [
               InkWell(
@@ -126,12 +131,73 @@ class _ChatScreenState extends State<ChatScreen> {
               ),
             ],
           ),
-
           SizedBox(
             height: 20.h,
           ),
         ],
       ),
     );
+  }
+
+  Future<void> sendPushNotification(
+      String deviceToken, UserListModel person, String sentMessage) async {
+    try {
+      // 1. Load your service account JSON file
+      final serviceAccountJson =
+          await rootBundle.loadString('assets/images/service_account.json');
+      final serviceAccount = json.decode(serviceAccountJson);
+
+      final credentials = ServiceAccountCredentials.fromJson(serviceAccount);
+
+      // 2. Create authenticated client
+      final scopes = ['https://www.googleapis.com/auth/firebase.messaging'];
+      final authClient = await clientViaServiceAccount(credentials, scopes);
+
+      // 3. Get the access token from the auth client
+      final accessToken = authClient.credentials.accessToken.data;
+
+      // 4. Create Dio instance
+      final dio = Dio();
+
+      final projectId = serviceAccount['project_id'];
+      final url =
+          'https://fcm.googleapis.com/v1/projects/$projectId/messages:send';
+
+      // 5. Build the notification message
+      final message = {
+        "message": {
+          "token": deviceToken,
+          "notification": {
+            "title": person.name,
+            "body": sentMessage,
+          },
+          "data": {
+            "chatId": person.firebaseUid.toString(),
+          }
+        }
+      };
+
+
+      // 6. Send the push notification using Dio
+      final response = await dio.post(
+        url,
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $accessToken',
+            'Content-Type': 'application/json',
+          },
+        ),
+        data: jsonEncode(message),
+      );
+
+      if (response.statusCode == 200) {
+        print('Push notification sent successfully ✅');
+      } else {
+        print(
+            'Failed to send push notification ❌: ${response.statusCode} ${response.data}');
+      }
+    } catch (e) {
+      print('Error sending push notification ❌: $e');
+    }
   }
 }

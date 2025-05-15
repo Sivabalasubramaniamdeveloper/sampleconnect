@@ -61,6 +61,7 @@ print('user');
     }
   }
 
+
   Future<void> fetchMicrosoftProfilePhoto(String accessToken) async {
     final response = await http.get(
       Uri.parse('https://graph.microsoft.com/v1.0/me/photo/\$value'),

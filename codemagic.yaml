@@ -1,21 +1,82 @@
+
 workflows:
-  flutter-app:
-    name: Build and Distribute Flutter App
+  android-release:
+    name: Android Release
     environment:
-      flutter: stable
       groups:
-        - firebase_credentials
+        - sampleTest
+      flutter: stable
+      vars:
+        FIREBASE_APP_ID: 1:606003359472:android:fab20b501d67a10d5c9c35
+        FIREBASE_GROUPS: sampleTest
+
     scripts:
-      - name: Get Flutter Dependencies
+      - name: Decode Firebase service account
+        script: echo $FIREBASE_SERVICE | base64 --decode > $CM_BUILD_DIR/firebase-service-account.json
+
+      - name: Install Firebase CLI
+        script: npm install -g firebase-tools --force
+
+      - name: Install Flutter dependencies
         script: flutter pub get
-      - name: Build APK
+
+      - name: Build APK (release flavor)
         script: flutter build apk --release
-      - name: Distribute to Firebase
-        script: |
-          curl -sL https://firebase.tools | bash
-          firebase appdistribution:distribute build/app/outputs/flutter-apk/app-release.apk \
-            --app "1:606003359472:android:fab20b501d67a10d5c9c35" \
-            --token "1//0gGkOve7OjOpWCgYIARAAGBASNwF-L9IrkdcFpI0hBQI3zDhly7ec6xpcByhQjJI-BFkwnit7SPM6TmlGwlSh79Gi4kleIWM60f4" \
-            --groups "sampleTest"
+
     artifacts:
-      - build/app/outputs/flutter-apk/app-release.apk
+      - build/app/outputs/flutter-apk/*.apk
+
+    publishing:
+      firebase:
+        firebase_token: 1//0gGkOve7OjOpWCgYIARAAGBASNwF-L9IrkdcFpI0hBQI3zDhly7ec6xpcByhQjJI-BFkwnit7SPM6TmlGwlSh79Gi4kleIWM60f4
+        android:
+          app_id: 1:281360008981:android:8234e56cf7f66de29dcb1c
+          groups:
+            - yaantrac
+          artifact_type: "apk"
+
+#  ios-release:
+#    name: iOS Release
+#    environment:
+#      flutter: stable
+#      xcode: latest
+#      vars:
+#        FIREBASE_APP_ID: 1:281360008981:ios:cf15c4677269224f9dcb1c
+#        FIREBASE_GROUPS: yaantrac
+#
+#    scripts:
+#      - name: Decode Firebase service account
+#        script: echo $FIREBASE_SERVICE | base64 --decode > $CM_BUILD_DIR/firebase-service-account.json
+#
+#      - name: Install Firebase CLI
+#        script: npm install -g firebase-tools --force
+#
+#      - name: Install Flutter dependencies
+#        script: flutter pub get
+#
+#      - name: Precache iOS tools
+#        script: flutter precache --ios
+#
+#      - name: Clean and install CocoaPods
+#        script: |
+#          cd ios
+#          rm -rf Pods Podfile.lock
+#          flutter clean
+#          flutter pub get
+#          arch -x86_64 pod repo update
+#          arch -x86_64 pod install
+#          cd ..
+#
+#      - name: Build IPA
+#        script: flutter build ipa --flavor uat -t lib/main_uat.dart --release --export-options-plist=ios/ExportOptions.plist
+#
+#      - name: Upload IPA to Firebase
+#        script: |
+#          firebase appdistribution:distribute \
+#            build/ios/ipa/*.ipa \
+#            --app $FIREBASE_APP_ID \
+#            --groups $FIREBASE_GROUPS \
+#            --token 1//0gEKgtCJGjivuCgYIARAAGBASNwF-L9IrgCALypx7VDiERlfVg4Ed7ZILphjafPovBlInYWRrfQzh4kzKz6V-rrpBZGTNPL1EmP8
+#
+#    artifacts:
+#      - build/ios/ipa/*.ipa

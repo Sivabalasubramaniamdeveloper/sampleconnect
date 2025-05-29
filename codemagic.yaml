@@ -1,0 +1,21 @@
+workflows:
+  flutter-app:
+    name: Build and Distribute Flutter App
+    environment:
+      flutter: stable
+      groups:
+        - firebase_credentials
+    scripts:
+      - name: Get Flutter Dependencies
+        script: flutter pub get
+      - name: Build APK
+        script: flutter build apk --release
+      - name: Distribute to Firebase
+        script: |
+          curl -sL https://firebase.tools | bash
+          firebase appdistribution:distribute build/app/outputs/flutter-apk/app-release.apk \
+            --app "1:606003359472:android:fab20b501d67a10d5c9c35" \
+            --token "1//0gGkOve7OjOpWCgYIARAAGBASNwF-L9IrkdcFpI0hBQI3zDhly7ec6xpcByhQjJI-BFkwnit7SPM6TmlGwlSh79Gi4kleIWM60f4" \
+            --groups "sampleTest"
+    artifacts:
+      - build/app/outputs/flutter-apk/app-release.apk

@@ -9,9 +9,9 @@ import '../../Screens/microsoft/Microsoft.dart';
 
 
 final Map<String, WidgetBuilder> appRoutes = {
-  // '/': (context) => AutoLogin(),
+  '/': (context) => AutoLogin(),
   // '/': (context) => Localdb(),
-  '/': (context) => MicroSoftLogin(),
+  // '/': (context) => MicroSoftLogin(),
   '/gmailAuth': (context) => GmailAuthPage(),
   '/homeScreen': (context) => HomeScreen(),
   '/chatList': (context) => ChatList(),

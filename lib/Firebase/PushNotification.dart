@@ -26,6 +26,7 @@ class PushNotificationService {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
   void requestNotificationPermission() async {
+    print("object");
     NotificationSettings settings = await messaging.requestPermission(
       alert: true,
       announcement: true,
@@ -49,6 +50,7 @@ class PushNotificationService {
   Future<String> getDeviceToken() async {
     final SharedPreferences localDb = await SharedPreferences.getInstance();
     String? token = await messaging.getToken();
+    print("firebaseToken$token");
     await localDb.setString("firebaseToken", token!);
     return token;
   }

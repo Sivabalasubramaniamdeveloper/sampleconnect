@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
+// import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -61,11 +61,11 @@ class _GmailAuthPageState extends State<GmailAuthPage> {
 
   Future<void> loginFunction() async {
     final SharedPreferences localDb = await SharedPreferences.getInstance();
-    var connectivityResult = await Connectivity().checkConnectivity();
-    if (connectivityResult.first == ConnectivityResult.none) {
-      Fluttertoast.showToast(msg: "No internet connection");
-      return;
-    }
+    // var connectivityResult = await Connectivity().checkConnectivity();
+    // if (connectivityResult.first == ConnectivityResult.none) {
+    //   Fluttertoast.showToast(msg: "No internet connection");
+    //   return;
+    // }
     setState(() {
       _isSigningIn = true;
     });

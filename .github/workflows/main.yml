@@ -20,6 +20,8 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}  # replace with your Flutter version
+      - name: Set up Firebase credentials
+        run: echo "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}" > firebase_credentials.json
 
       - name: Install dependencies
         run: flutter pub get
@@ -32,6 +34,6 @@ jobs:
         with:
           appId: ${{ secrets.FIREBASE_APP_ID }}
           token: ${{ secrets.FIREBASE_TOKEN }}
-          groups: testers
+          groups: sampleTest
           file: build/app/outputs/flutter-apk/app-release.apk
-          serviceCredentialsFile: firebase_credentials.json
+#          serviceCredentialsFile: firebase_credentials.json

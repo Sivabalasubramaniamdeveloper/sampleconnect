@@ -36,4 +36,4 @@ jobs:
           token: ${{ secrets.FIREBASE_TOKEN }}
           groups: sampleTest
           file: build/app/outputs/flutter-apk/app-release.apk
-#          serviceCredentialsFile: firebase_credentials.json
+          serviceCredentialsFile: firebase_credentials.json

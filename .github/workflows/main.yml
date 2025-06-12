@@ -20,8 +20,6 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}  # replace with your Flutter version
-      - name: Set up Firebase credentials
-        run: echo "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}" > firebase_credentials.json
 
       - name: Install dependencies
         run: flutter pub get
@@ -29,11 +27,14 @@ jobs:
       - name: Build APK
         run: flutter build apk --release
 
+      - name: Decode Firebase Service Account
+        run: echo "${{ secrets.FIREBASE_CREDENTIALS }}" | base64 --decode > firebase_credentials.json
+
       - name: Upload release to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
           appId: ${{ secrets.FIREBASE_APP_ID }}
-          token: ${{ secrets.FIREBASE_TOKEN }}
-          groups: sampleTest
+#          token: ${{ secrets.FIREBASE_TOKEN }}
           file: build/app/outputs/flutter-apk/app-release.apk
           serviceCredentialsFile: firebase_credentials.json
+          groups: sampleTest

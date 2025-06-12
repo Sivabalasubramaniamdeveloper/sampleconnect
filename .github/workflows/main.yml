@@ -8,6 +8,7 @@ env:
   JAVA_VERSION: "17"
   FLUTTER_VERSION: "3.27.3"
 
+
 jobs:
   build:
     name: Build Flutter App and Distribute to Firebase

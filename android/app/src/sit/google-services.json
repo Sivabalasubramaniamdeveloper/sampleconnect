@@ -1,0 +1,175 @@
+{
+  "project_info": {
+    "project_number": "606003359472",
+    "firebase_url": "https://simpleconnect-a3b70-default-rtdb.firebaseio.com",
+    "project_id": "simpleconnect-a3b70",
+    "storage_bucket": "simpleconnect-a3b70.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:606003359472:android:c8c1b1ee9ef4b8665c9c35",
+        "android_client_info": {
+          "package_name": "com.example.flutter_task"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "606003359472-4q42e3h3vovb8mellt4gv16p7pdfc17f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.flutter_task",
+            "certificate_hash": "5ce58cfda8d50680464ec610915a57697fbcf992"
+          }
+        },
+        {
+          "client_id": "606003359472-br7t7ld0i337eipo5c8obms1t21nfi1s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.flutter_task",
+            "certificate_hash": "ca23b346092dd5560769c3f367f794c79272689f"
+          }
+        },
+        {
+          "client_id": "606003359472-hmcqj9vhagde8figcb5jesj1p9j8cqcg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.flutter_task",
+            "certificate_hash": "80021dd35d2a45b8a5d3cf857349ae6f2d15ebb8"
+          }
+        },
+        {
+          "client_id": "606003359472-ug5ob30jfv952kt3k0h8t5v15hgjea0a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.flutter_task",
+            "certificate_hash": "41eed9148debc5722979b3ee8a600c44b1f0c505"
+          }
+        },
+        {
+          "client_id": "606003359472-vv4ic3mn4n1pmqu2opbq3plrlvbrpov4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.flutter_task",
+            "certificate_hash": "f766ed3b59cc3e5afde2fe0a49b53391abb208a2"
+          }
+        },
+        {
+          "client_id": "606003359472-1avvfuaa5l15ske7i5c9rd9rfi2khafp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBD0ELiWbCXnyMkEpHIiUeynBvJKOapxa4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "606003359472-1avvfuaa5l15ske7i5c9rd9rfi2khafp.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "606003359472-cb6egmepddsaehi88utra02ti4u3bg1u.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.flutterTask"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:606003359472:android:fab20b501d67a10d5c9c35",
+        "android_client_info": {
+          "package_name": "com.siva.sampleconnect"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "606003359472-d90nmiqoe7qc7trhf1eerpahmkcrore6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.siva.sampleconnect",
+            "certificate_hash": "ca23b346092dd5560769c3f367f794c79272689f"
+          }
+        },
+        {
+          "client_id": "606003359472-rr5ifcma50au6km2ac0omd5erq4v3unl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.siva.sampleconnect",
+            "certificate_hash": "7541e9ab582ade96bd2fc414f77c5c1b3fe06954"
+          }
+        },
+        {
+          "client_id": "606003359472-1avvfuaa5l15ske7i5c9rd9rfi2khafp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBD0ELiWbCXnyMkEpHIiUeynBvJKOapxa4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "606003359472-1avvfuaa5l15ske7i5c9rd9rfi2khafp.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "606003359472-cb6egmepddsaehi88utra02ti4u3bg1u.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.flutterTask"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:606003359472:android:126e16c22792d8325c9c35",
+        "android_client_info": {
+          "package_name": "com.siva.sampleconnect.sit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "606003359472-1avvfuaa5l15ske7i5c9rd9rfi2khafp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBD0ELiWbCXnyMkEpHIiUeynBvJKOapxa4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "606003359472-1avvfuaa5l15ske7i5c9rd9rfi2khafp.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "606003359472-cb6egmepddsaehi88utra02ti4u3bg1u.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.flutterTask"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

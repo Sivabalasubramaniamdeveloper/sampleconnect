@@ -16,9 +16,9 @@ class PushNotificationService {
     // Request permission for iOS devices
 
     // Generate the token and save it locally
-    final token = await FirebaseMessaging.instance.getToken();
+    final token = await FirebaseMessaging.instance.getToken()??'';
     print("Firebase Token: $token");
-    // await localDb.setString("firebaseToken", token!);
+    // await localDb.setString("firebaseToken", token);
     await FirebaseMessaging.instance.requestPermission(
       alert: true,
       announcement: true,

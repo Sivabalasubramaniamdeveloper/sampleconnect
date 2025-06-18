@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "606003359472",
+    "project_id": "simpleconnect-a3b70",
+    "storage_bucket": "simpleconnect-a3b70.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:606003359472:android:fab20b501d67a10d5c9c35",
+        "android_client_info": {
+          "package_name": "com.siva.sampleconnect"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "606003359472-d90nmiqoe7qc7trhf1eerpahmkcrore6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.siva.sampleconnect",
+            "certificate_hash": "ca23b346092dd5560769c3f367f794c79272689f"
+          }
+        },
+        {
+          "client_id": "606003359472-1avvfuaa5l15ske7i5c9rd9rfi2khafp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBD0ELiWbCXnyMkEpHIiUeynBvJKOapxa4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "606003359472-1avvfuaa5l15ske7i5c9rd9rfi2khafp.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "606003359472-mp4e05gnugi4is8sgkk22vqkef5goskc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.siva.sampleconnect"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

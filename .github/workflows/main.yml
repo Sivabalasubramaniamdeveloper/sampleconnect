@@ -53,8 +53,8 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Make Gradle executable
-        run: chmod +x android/gradlew
+#      - name: Make Gradle executable
+#        run: chmod +x android/gradlew
 
       - name: Install Firebase CLI
         run: |

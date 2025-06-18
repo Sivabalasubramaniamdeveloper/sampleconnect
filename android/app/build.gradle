@@ -22,8 +22,9 @@ if (flutterRoot == null) {
 
 // Try multiple locations for key.properties
 def keystoreProperties = new Properties()
-def androidKeyFile = rootProject.file("android/key.properties")
-def rootKeyFile = rootProject.file("key.properties")
+
+def androidKeyFile = file("android/key.properties")
+def rootKeyFile = file("../key.properties") // root of repo
 
 // Try android directory first
 if (androidKeyFile.exists()) {
@@ -79,8 +80,8 @@ android {
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = 23
         targetSdk = flutter.targetSdkVersion
-        versionCode = 4
-        versionName = "1.0.3"
+        versionCode = 5
+        versionName = "1.0.4"
     }
 
     buildTypes {

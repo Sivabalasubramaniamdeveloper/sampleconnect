@@ -7,7 +7,6 @@ plugins {
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id "dev.flutter.flutter-gradle-plugin"
 }
-
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
@@ -16,20 +15,32 @@ if (localPropertiesFile.exists()) {
     }
 }
 
-
-def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
-if (flutterVersionCode == null) {
-    flutterVersionCode = '1'
+def flutterRoot = localProperties.getProperty('flutter.sdk')
+if (flutterRoot == null) {
+    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
 }
 
-def flutterVersionName = localProperties.getProperty('flutter.versionName')
-if (flutterVersionName == null) {
-    flutterVersionName = '1.0'
-}
+// Try multiple locations for key.properties
 def keystoreProperties = new Properties()
-def keystorePropertiesFile = rootProject.file("key.properties")
-if (keystorePropertiesFile.exists()) {
-    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+def androidKeyFile = rootProject.file("android/key.properties")
+def rootKeyFile = rootProject.file("key.properties")
+
+// Try android directory first
+if (androidKeyFile.exists()) {
+    keystoreProperties.load(new FileInputStream(androidKeyFile))
+    println "✅ Keystore file loaded successfully from android directory."
+    println "✅ Keystore file path: ${keystoreProperties['storeFile']}"
+}
+// Then try root directory
+else if (rootKeyFile.exists()) {
+    keystoreProperties.load(new FileInputStream(rootKeyFile))
+    println "✅ Keystore file loaded successfully from root directory."
+    println "✅ Keystore file path: ${keystoreProperties['storeFile']}"
+}
+else {
+    println "❌ Warning: key.properties file not found in any location."
+    println "Searched in: ${androidKeyFile.absolutePath}"
+    println "Searched in: ${rootKeyFile.absolutePath}"
 }
 android {
     namespace = "com.siva.sampleconnect"
@@ -51,10 +62,14 @@ android {
 
     signingConfigs {
         release {
-            storeFile file(keystoreProperties['storeFile'])
-            storePassword keystoreProperties['storePassword']
-            keyAlias keystoreProperties['keyAlias']
-            keyPassword keystoreProperties['keyPassword']
+            if (keystoreProperties.containsKey('storeFile') && keystoreProperties['storeFile'] != null) {
+                keyAlias keystoreProperties['keyAlias']
+                keyPassword keystoreProperties['keyPassword']
+                storeFile file(keystoreProperties['storeFile'].toString())
+                storePassword keystoreProperties['storePassword']
+            } else {
+                println "⚠️ Signing config incomplete: storeFile is missing or null"
+            }
         }
     }
     defaultConfig {

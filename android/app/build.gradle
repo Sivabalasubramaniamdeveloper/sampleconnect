@@ -22,9 +22,8 @@ if (flutterRoot == null) {
 
 // Try multiple locations for key.properties
 def keystoreProperties = new Properties()
-
-def androidKeyFile = file("android/key.properties")
-def rootKeyFile = file("../key.properties") // root of repo
+def androidKeyFile = rootProject.file("android/key.properties")
+def rootKeyFile = rootProject.file("key.properties")
 
 // Try android directory first
 if (androidKeyFile.exists()) {
@@ -63,14 +62,14 @@ android {
 
     signingConfigs {
         release {
-            if (keystoreProperties.containsKey('storeFile') && keystoreProperties['storeFile'] != null) {
+//            if (keystoreProperties.containsKey('storeFile') && keystoreProperties['storeFile'] != null) {
                 keyAlias keystoreProperties['keyAlias']
                 keyPassword keystoreProperties['keyPassword']
                 storeFile file(keystoreProperties['storeFile'].toString())
                 storePassword keystoreProperties['storePassword']
-            } else {
-                println "⚠️ Signing config incomplete: storeFile is missing or null"
-            }
+//            } else {
+//                println "⚠️ Signing config incomplete: storeFile is missing or null"
+//            }
         }
     }
     defaultConfig {
@@ -80,8 +79,8 @@ android {
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = 23
         targetSdk = flutter.targetSdkVersion
-        versionCode = 5
-        versionName = "1.0.4"
+        versionCode = 6
+        versionName = "1.0.6"
     }
 
     buildTypes {

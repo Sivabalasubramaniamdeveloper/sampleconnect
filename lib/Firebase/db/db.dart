@@ -21,7 +21,7 @@ class DBHelper {
     String path = join(await getDatabasesPath(), 'econnect.db');
     return await openDatabase(
       path,
-      version: 23,
+      version: 25,
       onCreate: _createDB,
     );
   }
@@ -47,7 +47,6 @@ CREATE TABLE users (
 
     print('Subscription data inserted');
 
-    await insertDummyUserData1(db);
     print('User data inserted');
   }
 

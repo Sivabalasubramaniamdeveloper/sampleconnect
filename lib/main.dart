@@ -80,7 +80,7 @@ Future main() async {
     return true;
   };
   auth = FirebaseAuth.instanceFor(app: app);
-  // await PushNotificationService().init();
+  await PushNotificationService().init();
   await LocalNotification.localInit();
   runApp(const MyApp());
 }

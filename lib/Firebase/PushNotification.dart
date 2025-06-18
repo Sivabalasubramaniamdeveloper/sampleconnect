@@ -8,17 +8,17 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {}
 class PushNotificationService {
   final FirebaseMessaging messaging = FirebaseMessaging.instance;
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
+  FlutterLocalNotificationsPlugin();
 
   Future<void> init() async {
-    final SharedPreferences localDbb = await SharedPreferences.getInstance();
+
 
     // Request permission for iOS devices
 
     // Generate the token and save it locally
     final token = await FirebaseMessaging.instance.getToken();
     print("Firebase Token: $token");
-    await localDbb.setString("firebaseToken", token!);
+    // await localDb.setString("firebaseToken", token!);
     await FirebaseMessaging.instance.requestPermission(
       alert: true,
       announcement: true,
@@ -56,14 +56,14 @@ class PushNotificationService {
     // Create the Android notification channel
     await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
+        AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(channel);
 
     // Initialize the plugin for displaying notifications on the device
     const initializationSettingsAndroid =
-        AndroidInitializationSettings('launch_background');
+    AndroidInitializationSettings('launch_background');
     const initializationSettings =
-        InitializationSettings(android: initializationSettingsAndroid);
+    InitializationSettings(android: initializationSettingsAndroid);
     await flutterLocalNotificationsPlugin.initialize(initializationSettings);
 
     // Set foreground notification presentation options for iOS
@@ -88,7 +88,7 @@ class PushNotificationService {
             'high_importance_channel', // Make sure this matches your channel ID
             'High Importance Notifications',
             channelDescription:
-                'This channel is used for important notifications.',
+            'This channel is used for important notifications.',
             importance: Importance.high,
             icon: 'launch_background', // Change this to your app's icon
           ),

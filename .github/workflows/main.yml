@@ -21,6 +21,45 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}  # replace with your Flutter version
+      - name: Decode and save keystore
+        run: |
+          echo "${{secrets.CM_KETSTORE_SIT}}" | base64 --decode > upload-keystore.jks
+          chmod 600 upload-keystore.jks
+      - name: Decode keystore
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > upload-keystore.jks
+
+      - name: Create local.properties
+        run: |
+          echo "flutter.sdk=${{ runner.tool_cache }}/flutter/${{ env.FLUTTER_VERSION }}" > android/local.properties
+          
+      - name: Create key.properties in multiple locations
+        run: |
+          # Create in android directory
+          mkdir -p android
+          echo "storeFile=$GITHUB_WORKSPACE/android/app/my-release-key.jks" > android/key.properties
+          echo "storePassword=${{ secrets.KEYSTORE_PASSWORD }}" >> android/key.properties
+          echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> android/key.properties
+          echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> android/key.properties
+          chmod 600 android/key.properties
+          
+          # Create in root directory too
+          echo "storeFile=$GITHUB_WORKSPACE/android/app/my-release-key.jks" > key.properties
+          echo "storePassword=${{ secrets.KEYSTORE_PASSWORD }}" >> key.properties
+          echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> key.properties
+          echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> key.properties
+          chmod 600 key.properties
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Make Gradle executable
+        run: chmod +x android/gradlew
+
+      - name: Install Firebase CLI
+        run: |
+          curl -sL https://firebase.tools | bash
+          firebase --version
 
       - name: Install dependencies
         run: flutter pub get
@@ -28,9 +67,7 @@ jobs:
       - name: Build APK
         run: flutter build apk --release
 
-      - name: Decode keystore
-        run: |
-          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > android/app/keystore/debug-keystore.jks
+
 #      - name: Decode Firebase Service Account
 #        run: echo "${{ secrets.FIREBASE_CREDENTIALS }}" | base64 --decode > firebase_credentials.json
 

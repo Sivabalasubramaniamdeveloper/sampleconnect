@@ -6,7 +6,7 @@ on:
       - "sample"
 env:
   JAVA_VERSION: "17"
-  FLUTTER_VERSION: "3.27.3"
+  FLUTTER_VERSION: "3.32.0"
 
 
 jobs:
@@ -28,6 +28,9 @@ jobs:
       - name: Build APK
         run: flutter build apk --release
 
+      - name: Decode keystore
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > android/app/keystore/debug-keystore.jks
 #      - name: Decode Firebase Service Account
 #        run: echo "${{ secrets.FIREBASE_CREDENTIALS }}" | base64 --decode > firebase_credentials.json
 

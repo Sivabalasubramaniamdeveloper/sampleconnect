@@ -14,7 +14,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     String payloadData = jsonEncode(message.data);
     print("ssssssssssssssssssss");
     LocalNotification.simpleNotification(
-      titile: message.notification!.title!,
+      title: message.notification!.title!,
       body: message.notification!.body!,
       payload: payloadData,
     );

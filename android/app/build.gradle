@@ -26,10 +26,11 @@ def flutterVersionName = localProperties.getProperty('flutter.versionName')
 if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
-def storePath = localProperties.getProperty('signIn.file')
-def keystorePassword = localProperties.getProperty('signIn.storePassword')
-def keyAliasName = localProperties.getProperty('signIn.keyAliase')
-def keyPasswordFile = localProperties.getProperty('signIn.keyPassword')
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file("key.properties")
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
 android {
     namespace = "com.siva.sampleconnect"
     compileSdk = 35
@@ -50,10 +51,10 @@ android {
 
     signingConfigs {
         release {
-            storeFile file(storePath)
-            storePassword keystorePassword
-            keyAlias = keyAliasName
-            keyPassword keyPasswordFile
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
         }
     }
     defaultConfig {

@@ -32,6 +32,10 @@ jobs:
         run: |
           echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android/app/my-release-key.jks
 
+      - name: Decode and save Firebase service account
+        run: |
+          echo "${{ secrets.FIREBASE_CREDENTIALS_SIT }}" > firebase_credentials.json
+
       - name: Create key.properties
         run: |
           echo "storeFile=android/app/my-release-key.jks" > key.properties

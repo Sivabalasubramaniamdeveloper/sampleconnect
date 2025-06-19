@@ -59,4 +59,4 @@ jobs:
           groups: sampleTest
           releaseNotes: |
             ✅ New Features:
-            - Flavour setup
+            - With google sheet integration

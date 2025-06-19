@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:googleapis_auth/auth.dart';
 import 'package:googleapis_auth/auth_io.dart';
 import 'package:sampleconnect/Screens/Personalchat/cubit/chat_message_state.dart';
 
@@ -176,7 +175,11 @@ class _ChatScreenState extends State<ChatScreen> {
           }
         }
       };
-
+print(message);
+print(message);
+print(message);
+print(message);
+print(message);
 
       // 6. Send the push notification using Dio
       final response = await dio.post(

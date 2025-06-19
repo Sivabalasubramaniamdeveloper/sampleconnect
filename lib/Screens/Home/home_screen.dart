@@ -12,6 +12,7 @@ import '../../Utils/Constants/CustomWidgets.dart';
 import '../../Utils/Constants/TextStyle.dart';
 import '../../Utils/Theme/ThemeCubit/ThemeCubit.dart';
 import '../Expense/Presentation/ExpenseScreen.dart';
+import '../GoogleSheets/google_sheets.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -33,10 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
     ),
     ChatList(),
     ExpenseScreen(),
-    Text(
-      'Profile',
-      style: TextStyleClass.textSize18Bold(),
-    ),
+    GoogleSheets(),
   ];
   @override
   void initState() {
